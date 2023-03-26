@@ -2,7 +2,8 @@ import csv
 import random
 import pprint
 
-with open("C:/Users/Treil/Documents/Python Coding/Aeons_End_Rando/karten.csv", newline='') as karten_liste:
+with open("C:/Users/Treil/Documents/Python Coding/Boardgames/Aeons_End_Rando/karten.csv", newline='') as karten_liste:
+    welle = input("Mit welcher Welle willst du spielen? \n 1: Aeon's End \n 2: Für die Ewigkeit \n")
     balance = 0
     effekte = {"Draw": False, "Sift": False, "Trash": False, \
                "Riss bündeln": False, "Energie gewinnen": False, \
@@ -12,8 +13,11 @@ with open("C:/Users/Treil/Documents/Python Coding/Aeons_End_Rando/karten.csv", n
     karten = {"Artefakt": [], "Zauber": [], "Kristall": []}
     karten_im_spiel = {"Artefakt": [], "Zauber": [], "Kristall": []}
     for line in reader:
-        if line["Typ"] in karten.keys():
-            karten[line["Typ"]].append(line)
+        if line["Welle"] == welle or line["Welle"] == "Promo":
+            if line["Typ"] in karten.keys():
+                karten[line["Typ"]].append(line)
+        else:
+            continue
 
     karten_im_spiel["Artefakt"] = random.sample(karten["Artefakt"], k=2)
     karten_im_spiel["Kristall"] = random.sample(karten["Kristall"], k=3)
@@ -54,6 +58,6 @@ with open("C:/Users/Treil/Documents/Python Coding/Aeons_End_Rando/karten.csv", n
                     effekte["Heilung Charakter"] = True
                     balance += 1
             print(karten["Typ"] + ": " + karten["Name"] + " " \
-                  + karten["Kosten"])
+                  + karten["Kosten"] + " " + karten["Welle"])
     print(balance)
     pprint.pprint(effekte)
